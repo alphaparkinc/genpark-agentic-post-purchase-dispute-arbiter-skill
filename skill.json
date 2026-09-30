@@ -1,0 +1,52 @@
+{
+  "name": "genpark-agentic-post-purchase-dispute-arbiter-skill",
+  "version": "1.0.0",
+  "description": "Autonomous Agentic Post-Purchase Tracking & Delivery Dispute Arbiter (inspired by Meta Muse, Shopify, Walmart, Instacart Post-Checkout Operations). Ingests carrier webhook events, tracks transit anomalies (stalled shipments, delivery failures), calculates compensation eligibility, and generates structured merchant claim payloads.",
+  "tools": [
+    {
+      "name": "arbitrate_post_purchase_dispute",
+      "description": "Post-checkout telemetry and dispute arbitration: track multi-carrier shipping updates, detect delay anomalies, assess refund eligibility, and generate merchant dispute claim payloads.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "evaluate_shipment_status",
+              "assess_refund_eligibility",
+              "generate_merchant_claim_payload",
+              "get_dispute_stats"
+            ],
+            "description": "Post-purchase arbitration action."
+          },
+          "order_id": {
+            "type": "string",
+            "description": "Commerce order identifier."
+          },
+          "carrier_events": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Timeline of tracking events from carrier."
+          },
+          "expected_delivery_timestamp": {
+            "type": "number",
+            "description": "Guaranteed delivery timestamp."
+          },
+          "order_total_usd": {
+            "type": "number",
+            "description": "Total order amount paid."
+          },
+          "claim_reason": {
+            "type": "string",
+            "description": "Reason for dispute (e.g. STALLED_SHIPMENT, LOST_PACKAGE, DAMAGED)."
+          }
+        },
+        "required": [
+          "action"
+        ]
+      }
+    }
+  ]
+}
